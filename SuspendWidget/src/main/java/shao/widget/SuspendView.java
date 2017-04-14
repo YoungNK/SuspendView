@@ -17,13 +17,9 @@ import java.lang.reflect.Field;
 
 import shao.manager.ManagerUtils;
 
-
-/**
- * Created by zimo on 15/12/15.
- */
 public abstract class SuspendView extends LinearLayout {
 
-    private int sencetive = 3;
+    private int sensitivity = 3;
     private int statusBarHeight;
     private Context context;
     public int viewWidth, viewHeight;
@@ -72,11 +68,11 @@ public abstract class SuspendView extends LinearLayout {
     }
 
     /**
-     * 设置灵敏度
-     * @param sencetive
+     * 设置滑动灵敏度
+     * @param sensitivity
      */
-    public void setSencetive(int sencetive) {
-        this.sencetive = sencetive;
+    public void setSensitivity(int sensitivity) {
+        this.sensitivity = sensitivity;
     }
 
     @Override
@@ -87,7 +83,7 @@ public abstract class SuspendView extends LinearLayout {
                 startY = (int) event.getRawY();
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (Math.abs(startX - event.getRawX()) > sencetive || Math.abs(startY - event.getRawY()) > sencetive) {
+                if (Math.abs(startX - event.getRawX()) > sensitivity || Math.abs(startY - event.getRawY()) > sensitivity) {
                     params.x = (int) (event.getRawX() - viewWidth / 2);
                     params.y = (int) (event.getRawY() - viewHeight / 2 - statusBarHeight);
                     ManagerUtils.getManagerInstance(context).updateViewLayout(this, params);
@@ -96,7 +92,7 @@ public abstract class SuspendView extends LinearLayout {
             case MotionEvent.ACTION_UP:
                 endX = (int) event.getRawX();
                 endY = (int) event.getRawY();
-                if (Math.abs(startX - endX) > sencetive && Math.abs(startY - endY) > sencetive) {
+                if (Math.abs(startX - endX) > sensitivity && Math.abs(startY - endY) > sensitivity) {
                     return true;
                 }
         }
