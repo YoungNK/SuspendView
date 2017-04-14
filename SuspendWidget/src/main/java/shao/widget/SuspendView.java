@@ -1,4 +1,4 @@
-package shao.wiget;
+package shao.widget;
 /**
  * Created by shaozhaoyang on 2017/4/11.
  */
@@ -6,7 +6,6 @@ package shao.wiget;
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,8 +30,6 @@ public abstract class SuspendView extends LinearLayout {
     private int startX, startY;
     private int endX, endY;
     private WindowManager.LayoutParams params;
-
-    private OnClickListener onClickListener;
 
     public SuspendView(Context context) {
         this(context, null);
@@ -74,56 +71,35 @@ public abstract class SuspendView extends LinearLayout {
         }
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_MOVE:
-                if (Math.abs(startX - event.getRawX()) > sencetive || Math.abs(startY - event.getRawY()) > sencetive) {
-                    params.x = (int) (event.getRawX() - viewWidth / 2);
-                    params.y = (int) (event.getRawY() - viewHeight / 2 - statusBarHeight);
-                    ManagerUtils.getManagerInstance(context).updateViewLayout(this, params);
-                }
-                return true;
-            case MotionEvent.ACTION_UP:
-                endX = (int) event.getRawX();
-                endY = (int) event.getRawY();
-                if (Math.abs(startX - endX) < sencetive && Math.abs(startY - endY) < sencetive) {
-                    return false;
-                }else {
-                    return true;
-                }
-        }
-        return super.dispatchTouchEvent(event);
+    /**
+     * 设置灵敏度
+     * @param sencetive
+     */
+    public void setSencetive(int sencetive) {
+        this.sencetive = sencetive;
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean dispatchTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 startX = (int) event.getRawX();
                 startY = (int) event.getRawY();
                 break;
             case MotionEvent.ACTION_MOVE:
-/*                if (Math.abs(startX - event.getRawX()) > sencetive || Math.abs(startY - event.getRawY()) > sencetive) {
+                if (Math.abs(startX - event.getRawX()) > sencetive || Math.abs(startY - event.getRawY()) > sencetive) {
                     params.x = (int) (event.getRawX() - viewWidth / 2);
                     params.y = (int) (event.getRawY() - viewHeight / 2 - statusBarHeight);
                     ManagerUtils.getManagerInstance(context).updateViewLayout(this, params);
-                }*/
-                break;
+                    return true;
+                }
             case MotionEvent.ACTION_UP:
-/*                endX = (int) event.getRawX();
+                endX = (int) event.getRawX();
                 endY = (int) event.getRawY();
-                if (Math.abs(startX - endX) < sencetive && Math.abs(startY - endY) < sencetive) {
-                    onClickListener.onClick(this);
-                    Log.d("onTouchEvent", "onClickListener");
-                }*/
-                break;
+                if (Math.abs(startX - endX) > sencetive && Math.abs(startY - endY) > sencetive) {
+                    return true;
+                }
         }
-        return true;
-    }
-
-    @Override
-    public void setOnClickListener(OnClickListener onClickListener) {
-        this.onClickListener = onClickListener;
+        return super.dispatchTouchEvent(event);
     }
 }

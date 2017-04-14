@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 
-import shao.wiget.SuspendView;
+import shao.widget.SuspendView;
 
 /**
  * Created by shaozhaoyang on 2017/4/13.
