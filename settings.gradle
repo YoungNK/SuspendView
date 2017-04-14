@@ -1,1 +1,1 @@
-include ':app', ':SuspendView'
+include ':app', ':SuspendWidget'
